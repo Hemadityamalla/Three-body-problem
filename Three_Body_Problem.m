@@ -143,7 +143,7 @@ figure(1)
 plot(t(1:N-1),TE(1:N-1,1));
 for i=1:N
     figure(2)
-plot(x1(i),y1(i),'b',x2(i),y2(i),'r',x3(i),y3(i),'g');
+plot(x1(i),y1(i),'b*',x2(i),y2(i),'r*',x3(i),y3(i),'g*');
 pause(0.000001);
 hold on;
 
