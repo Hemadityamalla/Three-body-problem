@@ -14,7 +14,7 @@ def computeForce(masses,positions):
     ri, rj, rk = positions
     mj, mk = masses
     dr = [ri-rj, ri-rk]
-    Fi = sum([G*mass*(r/np.linalg.norm(r)**3) for mass,r in zip([mj,mk], dr)])
+    Fi = -sum([G*mass*(r/np.linalg.norm(r)**3) for mass,r in zip([mj,mk], dr)])
     return Fi
 
 
@@ -35,17 +35,18 @@ G = 4*np.pi**2
 body = []
 #Body 1
 body.append(Body(1,1, np.asarray([3.3030197, -0.82771837]), np.asarray([1.587433767, 1.47221479])))
-#body.append(Body(1,1, np.asarray([1.0, 0.0]), np.asarray([0.0, 6.1682])))
+#body.append(Body(3.0028e-6,1, np.asarray([1.0, 0.0]), np.asarray([0.0, 6.1682])))
 #Body 2
 body.append(Body(1,2, np.asarray([-3.3030197, 0.82771837]), np.asarray([1.587433767, 1.47221479])))
 #body.append(Body(1,2, np.asarray([0.0, 0.0]), np.asarray([0.0, 0.0])))
 #Body 3
 body.append(Body(1,3, np.asarray([0.0, 0.0]), np.asarray([-3.174867535, -2.94442961])))
+#body.append(Body(0,3, np.asarray([0.0, 0.0]), np.asarray([-3.174867535, -2.94442961])))
 
 
 #Time integration stuff
 dt = 0.01
-tFinal = 5.0
+tFinal = 10.0
 N = int(tFinal/dt)
 t = np.linspace(0, tFinal, N)
 body_pos = {"1":[], "2":[], "3":[]}
@@ -114,16 +115,22 @@ while ti < tFinal:
     #Final step
     for i in range(3):
         body[i].velocity+=(dt/4)*(k1_v_x[i]+3*k2_v_x[i])
+        #body[i].velocity+=(dt)*(k1_v_x[i])
     for i in range(3):
         body[i].position+=(dt/4)*(k1_v_x[i+3]+3*k2_v_x[i+3])
+        #body[i].position+=(dt)*(k1_v_x[i+3])
     x1.append(body[0].position[0])
     y1.append(body[0].position[1])
     print(body[0].position[0], body[0].position[1])
+    
+    for i,color in enumerate(["b", "r", "g"]):
+        plt.plot(body[i].position[0], body[i].position[1], color, marker="*", ms=1)
 
 
 
 
 
+plt.legend([f"Body {i}" for i in range(3)])
 plt.show()
 
     
